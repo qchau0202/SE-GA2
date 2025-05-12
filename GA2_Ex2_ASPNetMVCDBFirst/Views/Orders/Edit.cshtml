@@ -1,0 +1,50 @@
+﻿@model GA2_Ex2_ASPNetMVCDBFirst.Order
+
+@{
+    ViewBag.Title = "Edit Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card p-4">
+        <h2 class="fw-bold mb-4">Edit Order</h2>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.OrderID)
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.OrderDate, new { @class = "form-label" })
+                @Html.EditorFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OrderDate, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.AgentID, new { @class = "form-label" })
+                @Html.DropDownList("AgentID", null, "Select Agent", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AgentID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.UserID, new { @class = "form-label" })
+                @Html.DropDownList("UserID", null, "Select User", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-check-label" for="LockStatus">@Html.DisplayNameFor(model => model.Status):</label>
+                @Html.EditorFor(model => model.Status, new { @class = "form-check-input" })
+                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+            </div>
+            <div class="flex justify-content-between mt-3">
+                <a href="@Url.Action("Index", "Orders")" class="btn btn-outline-secondary">Back to List</a>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

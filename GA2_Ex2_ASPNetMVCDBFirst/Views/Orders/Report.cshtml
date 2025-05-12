@@ -1,0 +1,45 @@
+﻿@model IEnumerable<GA2_Ex2_ASPNetMVCDBFirst.Order>
+
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">All Orders Report</h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Agent</th>
+                        <th>User</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>@order.OrderID</td>
+                            <td>@order.Agent.AgentName</td>
+                            <td>@order.User.UserName</td>
+                            <td>@order.OrderDate.ToShortDateString()</td>
+                            <td>
+                                $@order.OrderDetails.Sum(d => d.Quantity * d.Item.UnitPrice)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("ReportDetails", "Orders", new { id = order.OrderID })" class="btn btn-sm btn-outline-secondary">View Report</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

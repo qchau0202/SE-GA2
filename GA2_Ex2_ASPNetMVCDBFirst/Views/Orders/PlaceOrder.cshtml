@@ -1,0 +1,95 @@
+﻿@model GA2_Ex2_ASPNetMVCDBFirst.Models.OrderViewModel
+
+@{
+    ViewBag.Title = "Place Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header text-primary">
+                        <h2 class="fw-bold mb-0">Place Order</h2>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "needs-validation", novalidate = true }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold"><i class="bi bi-calendar3 me-2"></i>Order Date</label>
+                                @Html.EditorFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form-control form-control-lg", @readonly = "readonly" } })
+                            </div>
+
+                            if (Model.OrderDetails.Any())
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <th class="text-center">Item</th>
+                                                <th class="text-center">Quantity</th>
+                                                <th class="text-center">Unit Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (int i = 0; i < Model.OrderDetails.Count; i++)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.HiddenFor(model => model.OrderDetails[i].ItemID)
+                                                        @Model.OrderDetails[i].ItemName
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @Html.EditorFor(model => model.OrderDetails[i].Quantity, new { htmlAttributes = new { @class = "form-control form-control-sm", @type = "number", @min = "1", required = true } })
+                                                        @Html.ValidationMessageFor(model => model.OrderDetails[i].Quantity, "", new { @class = "text-danger" })
+                                                    </td>
+                                                    <td class="text-end">
+                                                        @Html.EditorFor(model => model.OrderDetails[i].UnitAmount, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly" } })
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="d-flex justify-content-end mb-4">
+                                    @{
+                                        var total = Model.OrderDetails.Sum(item => item.Quantity * item.UnitAmount);
+                                    }
+                                    <strong>Total: $<span id="orderTotal">@total</span></strong>
+                                </div>
+                            }
+
+                            <div class="d-flex justify-content-between gap-3">
+                                <a href="@Url.Action("Cart", "Orders")" class="btn btn-outline-secondary btn-lg"><i class="bi bi-arrow-left me-2"></i>Back to Cart</a>
+                                <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-check-circle me-2"></i>Place Order</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        (function () {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+}

@@ -1,0 +1,45 @@
+﻿@model GA2_Ex2_ASPNetMVCDBFirst.Order
+
+@{
+    ViewBag.Title = "Create Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="card p-4">
+        <h2 class="mb-4">Create Order</h2>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.OrderDate, new { @class = "form-label" })
+                @Html.EditorFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OrderDate, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.AgentID, new { @class = "form-label" })
+                @Html.DropDownList("AgentID", null, "Select Agent", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AgentID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.UserID, new { @class = "form-label" })
+                @Html.DropDownList("UserID", null, "Select User", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
+            </div>
+            <div class="d-flex gap-2 mt-3">
+                <a href="@Url.Action("Index", "Orders")" class="btn btn-outline-secondary">Back to List</a>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+
+        }
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

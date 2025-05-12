@@ -1,0 +1,183 @@
+﻿@model List<GA2_Ex2_ASPNetMVCDBFirst.Order>
+
+@{
+    ViewBag.Title = "Order History";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+            <h2 class="fw-bold mb-0">Order History</h2>
+        </div>
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (Model.Any())
+        {
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th scope="col" class="py-3">Order ID</th>
+                                <th scope="col" class="py-3">Date</th>
+                                <th scope="col" class="py-3">Status</th>
+                                <th scope="col" class="py-3">Total</th>
+                                <th scope="col" class="py-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model)
+                            {
+                                var total = order.OrderDetails.Sum(od => od.Quantity * od.UnitAmount);
+                                <tr>
+                                    <td class="align-middle">#@order.OrderID</td>
+                                    <td class="align-middle">@order.OrderDate.ToString("MMM dd, yyyy")</td>
+                                    <td class="align-middle">
+                                        <span class="badge @((order.Status == "Pending" ? "bg-warning" : order.Status == "Cancelled" ? "bg-danger" : order.Status == "Accepted" ? "bg-success" : "bg-info")) text-white">
+                                            @order.Status
+                                        </span>
+                                    </td>
+                                    <td class="align-middle">$@total</td>
+                                    <td class="align-middle">
+                                        <button class="btn btn-sm btn-outline-primary view-details"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#orderDetailsModal"
+                                                data-order-id="@order.OrderID"
+                                                data-order-details="@Newtonsoft.Json.JsonConvert.SerializeObject(order.OrderDetails.Select(od => new { od.Item.ItemName, od.Quantity, od.UnitAmount, Total = od.Quantity * od.UnitAmount }))">
+                                            View Details
+                                        </button>
+                                        @if (order.Status != "Cancelled" && order.Status != "Accepted")
+                                        {
+                                            using (Html.BeginForm("CancelOrder", "Orders", new { id = order.OrderID }, FormMethod.Post, new { @class = "d-inline cancel-order-form" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-sm btn-outline-danger ms-2 cancel-order"
+                                                        data-order-id="@order.OrderID">
+                                                    Cancel
+                                                </button>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="card-body">
+                <div class="alert alert-info text-center p-4" role="alert">
+                    <i class="bi bi-info-circle me-2"></i>You have no orders yet.
+                </div>
+            </div>
+        }
+        <div class="card-footer bg-white border-top-0">
+            <div class="text-end">
+                <a href="@Url.Action("Shopping", "Items")" class="btn btn-primary">
+                    <i class="bi bi-cart me-2"></i>Shop Now
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Order Details Modal -->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Order #<span id="modal-order-id"></span></h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="order-details-table"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Handle view details click
+            document.querySelectorAll(".view-details").forEach(button => {
+                button.addEventListener("click", function () {
+                    const orderId = this.dataset.orderId;
+                    const orderDetails = JSON.parse(this.dataset.orderDetails);
+
+                    // Update modal content
+                    document.getElementById("modal-order-id").textContent = orderId;
+                    const tableBody = document.getElementById("order-details-table");
+                    tableBody.innerHTML = "";
+
+                    orderDetails.forEach(detail => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                                <td>${detail.ItemName}</td>
+                                <td>${detail.Quantity}</td>
+                                <td>$${parseFloat(detail.UnitAmount).toFixed(2)}</td>
+                                <td>$${parseFloat(detail.Total).toFixed(2)}</td>
+                            `;
+                        tableBody.appendChild(row);
+                    });
+                });
+            });
+
+            // Handle cancel order confirmation
+            document.querySelectorAll(".cancel-order").forEach(button => {
+                button.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const orderId = this.dataset.orderId;
+                    if (confirm(`Are you sure you want to cancel Order #${orderId}?`)) {
+                        this.closest("form").submit();
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<style>
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    .badge {
+        padding: 0.5em 1em;
+    }
+
+    .card {
+        border-radius: 0.5rem;
+    }
+</style>

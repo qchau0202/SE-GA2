@@ -1,0 +1,76 @@
+﻿@model GA2_Ex2_ASPNetMVCDBFirst.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header text-primary text-center">
+                        <h2 class="fw-bold mb-0">Register</h2>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "needs-validation", novalidate = true }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div class="mb-4">
+                                @Html.LabelFor(model => model.UserName, new { @class = "form-label" })
+                                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control form-control-lg", required = "required" } })
+                                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="mb-4">
+                                @Html.LabelFor(model => model.Email, new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control form-control-lg", type = "email", required = "required" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="mb-4">
+                                @Html.LabelFor(model => model.Password, new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control form-control-lg", @type = "password", required = "required" } })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="mb-4">
+                                @Html.LabelFor(model => model.ConfirmPassword, new { @class = "form-label" })
+                                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control form-control-lg", @type = "password", required = "required" } })
+                                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="d-grid mb-4">
+                                <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                            </div>
+
+                            <div class="text-center">
+                                <p class="mb-0">Already have an account? <a href="@Url.Action("Login", "Home")" class="text-primary text-decoration-none fw-bold">Login here</a></p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $('form.needs-validation').each(function () {
+                $(this).on('submit', function (e) {
+                    if (!this.checkValidity()) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                    $(this).addClass('was-validated');
+                });
+            });
+        });
+    </script>
+}

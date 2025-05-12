@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 text-center text-lg-start">
+                <h1 class="display-3 fw-bold mb-4">Streamline Your Operations with Our Management System</h1>
+                <p class="lead mb-4">Efficiently manage agents, items, and orders. Generate insightful reports to drive your business forward.</p>
+                @if (Session["UserID"] == null)
+                {
+                    <a href="@Url.Action("Login", "Home")" class="btn btn-primary btn-lg">Login to Get Started</a>
+                }
+                else
+                {
+                    <div class="d-grid gap-3 d-md-flex">
+                        <a href="@Url.Action("Index", "Agents")" class="btn btn-primary btn-lg">Manage Agents</a>
+                        <a href="@Url.Action("Index", "Items")" class="btn btn-outline-secondary btn-lg">Manage Items</a>
+                        <a href="@Url.Action("Index", "Orders")" class="btn btn-outline-secondary btn-lg">Manage Orders</a>
+                    </div>
+                }
+            </div>
+            <div class="col-lg-6">
+                <img src="~/Public/images/HomeBg.png" alt="Dashboard Overview" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="py-5 bg-white">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-md-12">
+                <h2 class="fw-bold">Key Features</h2>
+                <p class="lead">Explore the powerful features designed to simplify your workflow.</p>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-people me-2 text-primary"></i> Agent Management</h5>
+                        <p class="card-text">Easily add, update, and manage your agents. Track their performance and communication.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-box-seam me-2 text-success"></i> Item Tracking</h5>
+                        <p class="card-text">Maintain a detailed inventory of your items. Monitor stock levels and manage product information.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-cart-check me-2 text-info"></i> Order Processing</h5>
+                        <p class="card-text">Efficiently process new orders, track their status, and manage shipments.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-bar-chart-line me-2 text-warning"></i> Reporting & Analytics</h5>
+                        <p class="card-text">Generate comprehensive reports on sales, inventory, and agent performance to gain valuable insights.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-gear me-2 text-danger"></i> System Configuration</h5>
+                        <p class="card-text">Customize system settings to align with your specific business needs and workflows.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-shield-check me-2 text-secondary"></i> Secure & Reliable</h5>
+                        <p class="card-text">Your data is secure with our robust infrastructure and reliable system uptime.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="py-5 bg-light">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-4">Ready to Get Started?</h2>
+        <p class="lead mb-4">Join thousands of businesses already streamlining their operations.</p>
+        @if (Session["UserID"] == null)
+        {
+            <a href="@Url.Action("Login", "Home")" class="btn btn-primary btn-lg">Login</a>
+        }
+        else
+        {
+            <a href="@Url.Action("Index", "Orders")" class="btn btn-success btn-lg">Manage Orders</a>
+        }
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        // Optional: Add any home-specific JavaScript here
+    </script>
+}

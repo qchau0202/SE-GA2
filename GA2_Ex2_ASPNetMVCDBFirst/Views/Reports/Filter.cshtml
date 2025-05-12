@@ -1,0 +1,122 @@
+﻿@model GA2_Ex2_ASPNetMVCDBFirst.Models.FilterViewModel
+
+@{
+    ViewBag.Title = "Filter Reports";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card p-4 mb-4">
+        <h2 class="mb-4">Filter Reports</h2>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Filter Type</label>
+                    @Html.DropDownListFor(model => model.FilterType, new SelectList(new[]
+                         {
+                        new { Value = "BestItems", Text = "Best Items" },
+                        new { Value = "ItemsByAgent", Text = "Items Purchased by Agent" },
+                        new { Value = "AgentPurchases", Text = "Agent Purchase History" }
+                    }, "Value", "Text"), "Select Filter", new { @class = "form-select" })
+                    @Html.ValidationMessageFor(model => model.FilterType, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Agent</label>
+                    @Html.DropDownListFor(model => model.AgentID, (SelectList)ViewBag.AgentID, "Select Agent (optional)", new { @class = "form-select" })
+                    @Html.ValidationMessageFor(model => model.AgentID, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary mt-3">Apply Filter</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (Model.BestItems != null && Model.BestItems.Any())
+    {
+        <div class="card p-4 mb-4">
+            <h3 class="mb-3">Best Items</h3>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Total Quantity</th>
+                            <th>Total Revenue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.BestItems)
+                        {
+                            <tr>
+                                <td>@item.ItemName</td>
+                                <td>@item.TotalQuantity</td>
+                                <td>@item.TotalRevenue.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+    @if (Model.ItemsByAgent != null && Model.ItemsByAgent.Any())
+    {
+        <div class="card p-4 mb-4">
+            <h3 class="mb-3">Items Purchased by Agent</h3>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ItemsByAgent)
+                        {
+                            <tr>
+                                <td>@item.ItemName</td>
+                                <td>@item.Quantity</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+    @if (Model.AgentPurchases != null && Model.AgentPurchases.Any())
+    {
+        <div class="card p-4">
+            <h3 class="mb-3">Agent Purchase History</h3>
+            @foreach (var order in Model.AgentPurchases)
+            {
+                <div class="mb-4">
+                    <h4>Order ID: @order.OrderID, Date: @order.OrderDate.ToShortDateString()</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Item Name</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in order.Items)
+                                {
+                                    <tr>
+                                        <td>@item.ItemName</td>
+                                        <td>@item.Quantity</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

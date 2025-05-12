@@ -1,0 +1,37 @@
+﻿@model GA2_Ex2_ASPNetMVCDBFirst.Agent
+
+@{
+    ViewBag.Title = "Edit Agent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card p-4">
+        <h2 class="mb-4">Edit Agent</h2>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.AgentID)
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.AgentName)</label>
+                    @Html.EditorFor(model => model.AgentName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.AgentName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.Address)</label>
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 mt-4">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="@Url.Action("Index")" class="btn btn-outline-secondary ms-2">Back to List</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

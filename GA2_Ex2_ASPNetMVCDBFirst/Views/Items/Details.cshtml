@@ -1,0 +1,32 @@
+﻿@model GA2_Ex2_ASPNetMVCDBFirst.Item
+
+@{
+    ViewBag.Title = "Item Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="card p-4">
+        <h2 class="mb-4">Item Details</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <strong>@Html.DisplayNameFor(model => model.ItemName)</strong>
+                    <p>@Html.DisplayFor(model => model.ItemName)</p>
+                </div>
+                <div class="mb-3">
+                    <strong>@Html.DisplayNameFor(model => model.Size)</strong>
+                    <p>@Html.DisplayFor(model => model.Size)</p>
+                </div>
+                <div class="mb-3">
+                    <strong>@Html.DisplayNameFor(model => model.UnitPrice)</strong>
+                    <p>@String.Format("{0:C}", Model.UnitPrice)</p>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <a href="@Url.Action("Edit", new { id = Model.ItemID })" class="btn btn-primary">Edit</a>
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary ms-2">Back to List</a>
+        </div>
+    </div>
+</div>

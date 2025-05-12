@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6db7ff581b904cf9b3f612818711d586" Name="Diagram1">
+        <EntityTypeShape EntityType="InventoryDBModel.Agent" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryDBModel.Item" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryDBModel.Order" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryDBModel.OrderDetail" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryDBModel.User" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
+        <AssociationConnector Association="InventoryDBModel.FK__Order__AgentID__3E52440B" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryDBModel.FK__OrderDeta__ItemI__4222D4EF" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryDBModel.FK__OrderDeta__Order__412EB0B6" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="InventoryDBModel.C__EFMigrationsHistory" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="InventoryDBModel.Cart" Width="1.5" PointX="8" PointY="5" />
+        <AssociationConnector Association="InventoryDBModel.FK__Cart__ItemID__5629CD9C" />
+        <AssociationConnector Association="InventoryDBModel.FK__Cart__UserID__5535A963" />
+        <AssociationConnector Association="InventoryDBModel.FK_Order_Users" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

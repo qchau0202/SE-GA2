@@ -1,0 +1,36 @@
+﻿@model GA2_Ex2_ASPNetMVCDBFirst.User
+
+@{
+    ViewBag.Title = "User Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="card p-4">
+        <h2 class="mb-4">User Details</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <strong>@Html.DisplayNameFor(model => model.UserName)</strong>
+                    <p>@Html.DisplayFor(model => model.UserName)</p>
+                </div>
+                <div class="mb-3">
+                    <strong>@Html.DisplayNameFor(model => model.Email)</strong>
+                    <p>@Html.DisplayFor(model => model.Email)</p>
+                </div>
+                <div class="mb-3">
+                    <strong>@Html.DisplayNameFor(model => model.Password)</strong>
+                    <p>********</p>
+                </div>
+                <div class="mb-3">
+                    <strong>@Html.DisplayNameFor(model => model.LockStatus)</strong>
+                    <p>@Html.DisplayFor(model => model.LockStatus)</p>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <a href="@Url.Action("Edit", new { id = Model.UserID })" class="btn btn-primary">Edit</a>
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary ms-2">Back to List</a>
+        </div>
+    </div>
+</div>

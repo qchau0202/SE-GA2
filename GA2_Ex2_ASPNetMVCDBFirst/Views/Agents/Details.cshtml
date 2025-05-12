@@ -1,0 +1,28 @@
+﻿@model GA2_Ex2_ASPNetMVCDBFirst.Agent
+
+@{
+    ViewBag.Title = "Agent Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="card p-4">
+        <h2 class="mb-4">Agent Details</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <strong>@Html.DisplayNameFor(model => model.AgentName)</strong>
+                    <p>@Html.DisplayFor(model => model.AgentName)</p>
+                </div>
+                <div class="mb-3">
+                    <strong>@Html.DisplayNameFor(model => model.Address)</strong>
+                    <p>@Html.DisplayFor(model => model.Address)</p>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <a href="@Url.Action("Edit", new { id = Model.AgentID })" class="btn btn-primary">Edit</a>
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary ms-2">Back to List</a>
+        </div>
+    </div>
+</div>

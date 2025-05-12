@@ -1,0 +1,551 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="E-commerce - Modern Web Interface" />
+    <title>@ViewBag.Title - E-commerce</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/Site.css" />
+    <style>
+        :root {
+            --primary: #8B5CF6; /* Bright lavender */
+            --primary-hover: #7C3AED; /* Deeper purple for hover */
+            --secondary: #A78BFA; /* Light violet */
+            --background: #F5F3FF; /* Pale lavender background */
+            --accent: #4C1D95; /* Deep indigo for accents */
+            --text: #2D2F4A; /* Dark slate text */
+            --card-bg: #FFFFFF; /* White for cards */
+            --border-color: #DDD6FE; /* Soft purple border */
+            --sidebar-width: 250px;
+            --header-height: 70px;
+        }
+
+        html, body {
+            height: 100%;
+            background-color: var(--background);
+            color: var(--text);
+            font-family: "Lexend", sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            padding-top: var(--header-height);
+        }
+
+        .main-content {
+            flex: 1 0 auto;
+            min-height: calc(100vh - var(--header-height) - 60px); /* Adjust for footer */
+        }
+
+        /* Header styles */
+        .app-header {
+            height: var(--header-height);
+            background-color: #FFFFFF;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+            .header-brand i {
+                margin-right: 0.5rem;
+                color: var(--primary);
+            }
+
+        .header-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-action {
+            color: var(--text);
+            font-size: 1.2rem;
+            margin-left: 1rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            background-color: transparent;
+            transition: background-color 0.2s;
+        }
+
+            .header-action:hover {
+                background-color: rgba(0, 0, 0, 0.05);
+                color: var(--primary);
+            }
+
+        /* Sidebar styles */
+        .sidebar {
+            background: #FFFFFF;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height));
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            border-right: 1px solid var(--border-color);
+            z-index: 1020;
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .sidebar-nav {
+            padding: 1.5rem 1rem;
+        }
+
+        .nav-category {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6B7280;
+            margin-bottom: 0.75rem;
+            padding-left: 0.75rem;
+        }
+
+        .sidebar .nav-link {
+            color: var(--text);
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin: 0.25rem 0;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+            .sidebar .nav-link i {
+                margin-right: 0.75rem;
+                font-size: 1.1rem;
+                width: 1.5rem;
+                text-align: center;
+                color: #6B7280;
+                transition: color 0.2s;
+            }
+
+            .sidebar .nav-link:hover {
+                background-color: #F3F4F6;
+                color: var(--primary);
+            }
+
+                .sidebar .nav-link:hover i {
+                    color: var(--primary);
+                }
+
+            .sidebar .nav-link.active {
+                background-color: #EFF6FF;
+                color: var(--primary);
+            }
+
+                .sidebar .nav-link.active i {
+                    color: var(--primary);
+                }
+
+            .sidebar .nav-link .badge {
+                margin-left: auto;
+                font-size: 0.8rem;
+                padding: 0.3em 0.5em;
+            }
+
+        /* Main content styles */
+        .content-wrapper {
+            margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s ease;
+            padding: 1.5rem;
+        }
+
+        .no-sidebar .content-wrapper {
+            margin-left: 0;
+        }
+
+        .page-title {
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .page-title .buttons {
+                display: flex;
+                gap: 0.5rem;
+            }
+
+        .card {
+            background-color: var(--card-bg);
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 1.5rem;
+        }
+
+            .card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            }
+
+        .card-header {
+            background-color: transparent;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Form controls */
+        .form-control, .btn {
+            border-radius: 8px;
+        }
+
+        .form-control {
+            max-width: 600px; /* Adjust this value as needed */
+        }
+
+            .form-control:focus {
+                border-color: var(--primary);
+                box-shadow: 0 0 0 0.2rem rgba(20, 184, 166, 0.25);
+            }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+            .btn-primary:hover, .btn-primary:focus {
+                background-color: var(--primary-hover);
+                border-color: var(--primary-hover);
+            }
+
+        /* Tables */
+        .table {
+            border-color: var(--border-color);
+        }
+
+            .table th {
+                background-color: #F9FAFB;
+                font-weight: 600;
+                border-top: none;
+                padding: 0.75rem 1rem;
+            }
+
+            .table td {
+                padding: 0.75rem 1rem;
+                vertical-align: middle;
+            }
+
+        /* Footer styles */
+        .footer {
+            background-color: #FFFFFF;
+            color: var(--text);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.875rem;
+        }
+
+        /* Loading spinner */
+        .spinner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+            .spinner-overlay.show {
+                opacity: 1;
+                visibility: visible;
+            }
+
+        .spinner-border {
+            color: var(--primary);
+            width: 3rem;
+            height: 3rem;
+        }
+
+        /* Breadcrumb styles */
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .breadcrumb-item a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .breadcrumb-item.active {
+            color: var(--text);
+        }
+
+        /* Additional utility classes */
+        .text-primary {
+            color: var(--primary) !important;
+        }
+
+        .bg-primary {
+            background-color: var(--primary) !important;
+        }
+
+        .alert {
+            border-radius: 8px;
+        }
+
+        /* Drop shadow and transition effects */
+        .btn {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
+        }
+
+            .btn:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+        /* Badge styling */
+        .badge {
+            padding: 0.35em 0.65em;
+            font-weight: 600;
+            border-radius: 6px;
+        }
+
+        /* Username styling */
+        .header-username {
+            font-weight: 500;
+            color: var(--text);
+            margin-right: 1rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Spinner Overlay -->
+    <div id="loadingSpinner" class="spinner-overlay">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div>
+            <a href="@Url.Action("Index", "Home")" class="header-brand text-decoration-none">ShopWise</a>
+        </div>
+        <div class="header-right d-flex gap-3">
+            @if (Session["UserName"] != null)
+            {
+                <span class="header-username text-black">@Session["UserName"]</span>
+                <div class="p-2 bg-danger rounded-2">
+                    <a href="@Url.Action("Logout", "Home")" class="text-white text-decoration-none" title="Logout">
+                        Logout
+                    </a>
+                </div>
+            }
+        </div>
+    </header>
+
+    <div class="main-content @(Session["UserName"] == null ? "no-sidebar" : (Session["UserName"].ToString() == "admin" ? "" : "no-sidebar"))">
+        <!-- Sidebar Navigation -->
+        @if (Session["UserName"] != null)
+        {
+            if (Session["UserName"].ToString() == "admin")
+            {
+                <nav id="sidebar" class="sidebar">
+                    <div class="sidebar-nav">
+                        <div class="nav-category">Menu</div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("Index", "Home"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Index", "Home")">
+                                    <i class="fas fa-home"></i>
+                                    Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("Index", "Users"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Index", "Users")">
+                                    <i class="fas fa-users"></i>
+                                    Users
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("Index", "Orders"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Index", "Orders")">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    Orders
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("Index", "OrderDetails"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Index", "OrderDetails")">
+                                    <i class="fas fa-file-alt"></i>
+                                    Orders Detail
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("Index", "Items"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Index", "Items")">
+                                    <i class="fas fa-box"></i>
+                                    Items
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("Index", "Agents"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Index", "Agents")">
+                                    <i class="fas fa-user-tie"></i>
+                                    Agents
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="nav-category mt-4">Reports</div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("Filter", "Reports"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Filter", "Reports")">
+                                    <i class="fas fa-chart-bar"></i>
+                                    Analytics
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Request.Url.AbsolutePath.Contains("/Orders/Report") ? "active" : "")" href="@Url.Action("Report", "Orders")">
+                                    <i class="fas fa-poll-h"></i>
+                                    Order Reports
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            }
+            else
+            {
+                <!-- User Navigation -->
+                <nav id="sidebar" class="sidebar">
+                    <div class="sidebar-nav">
+                        <div class="nav-category">User Menu</div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("Shopping", "Items"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Shopping", "Items")">
+                                    <i class="fas fa-store"></i>
+                                    Shop
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("Profile", "Users"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Profile", "Users")">
+                                    <i class="fas fa-user"></i>
+                                    Profile
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(Request.Url.AbsolutePath.Equals(Url.Action("OrderHistory", "Orders"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("OrderHistory", "Orders")">
+                                    <i class="fas fa-history"></i>
+                                    Order History
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link position-relative @(Request.Url.AbsolutePath.Equals(Url.Action("Cart", "Orders"), StringComparison.OrdinalIgnoreCase) ? "active" : "")" href="@Url.Action("Cart", "Orders")">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Cart
+                                    @{
+                                        var cart = Session["Cart"] as List<GA2_Ex2_ASPNetMVCDBFirst.Models.OrderDetailViewModel> ?? new List<GA2_Ex2_ASPNetMVCDBFirst.Models.OrderDetailViewModel>();
+                                        var cartItemCount = cart.Select(item => item.ItemID).Distinct().Count();
+                                    }
+                                    @if (cartItemCount > 0)
+                                    {
+                                        <span class="badge bg-primary">@cartItemCount</span>
+                                    }
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            }
+        }
+
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <span>© @DateTime.Now.Year - ShopWise, developed by Quoc Chau & Tuyet Nhung</span>
+        </div>
+    </footer>
+
+    <!-- Scripts remain unchanged -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const spinner = document.getElementById('loadingSpinner');
+
+            // Mobile menu toggle
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', function () {
+                    sidebar.classList.toggle('show');
+                });
+            }
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function (event) {
+                const isClickInsideSidebar = sidebar && sidebar.contains(event.target);
+                const isClickOnToggle = mobileMenuToggle && mobileMenuToggle.contains(event.target);
+
+                if (!isClickInsideSidebar && !isClickOnToggle && sidebar && sidebar.classList.contains('show')) {
+                    sidebar.classList.remove('show');
+                }
+            });
+
+            // Show loading spinner when navigating
+            document.addEventListener('click', function (event) {
+                const link = event.target.closest('a');
+                if (link && !link.getAttribute('href').startsWith('#') && !link.getAttribute('href').startsWith('javascript:')) {
+                    spinner.classList.add('show');
+                }
+            });
+
+            // Handle form submissions
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function () {
+                    spinner.classList.add('show');
+                });
+            });
+
+            // Hide spinner when page is fully loaded
+            window.addEventListener('load', function () {
+                spinner.classList.remove('show');
+            });
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

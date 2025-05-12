@@ -1,0 +1,42 @@
+﻿@model IEnumerable<GA2_Ex2_ASPNetMVCDBFirst.Item>
+
+@{
+    ViewBag.Title = "Items";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">Items</h2>
+            <a href="@Url.Action("Create")" class="btn btn-primary">Create New Item</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.ItemName)</th>
+                        <th>@Html.DisplayNameFor(model => model.Size)</th>
+                        <th>@Html.DisplayNameFor(model => model.UnitPrice)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.ItemName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Size)</td>
+                            <td>@Html.DisplayFor(modelItem => item.UnitPrice)</td>
+                            <td>
+                                <a href="@Url.Action("Edit", new { id = item.ItemID })" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <a href="@Url.Action("Details", new { id = item.ItemID })" class="btn btn-sm btn-outline-secondary">Details</a>
+                                <a href="@Url.Action("Delete", new { id = item.ItemID })" class="btn btn-sm btn-outline-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

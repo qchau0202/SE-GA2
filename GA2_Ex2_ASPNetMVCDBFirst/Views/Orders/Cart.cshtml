@@ -1,0 +1,63 @@
+﻿@model List<GA2_Ex2_ASPNetMVCDBFirst.Models.OrderDetailViewModel>
+
+@{
+    ViewBag.Title = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header text-primary">
+                        <h2 class="fw-bold mb-0">Your Cart</h2>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.Any())
+                        {
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th class="text-center">Item</th>
+                                        <th class="text-center">Quantity</th>
+                                        <th class="text-center">Unit Price</th>
+                                        <th class="text-center">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.ItemName</td>
+                                            <td class="text-center">@item.Quantity</td>
+                                            <td class="text-end">$@item.UnitAmount</td>
+                                            <td class="text-end">$@(item.Quantity * item.UnitAmount)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                           
+                            <div class="d-flex justify-content-end mb-4">
+                                <strong>Total: $<span id="cartTotal">
+    @Model.Sum(item => item.Quantity * item.UnitAmount)
+</span></strong>
+                            </div>
+                            <div class="d-flex justify-content-end gap-3">
+                                <a href="@Url.Action("Shopping", "Items")" class="btn btn-outline-secondary btn-lg">Continue Shopping</a>
+                                <a href="@Url.Action("PlaceOrder", "Orders")" class="btn btn-primary btn-lg">Proceed to Checkout</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center py-5">
+                                <p class="text-muted fs-4">Your cart is empty.</p>
+                                <a href="@Url.Action("Shopping", "Items")" class="btn btn-primary mt-3">Start Shopping</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

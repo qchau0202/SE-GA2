@@ -1,0 +1,71 @@
+﻿@model GA2_Ex2_ASPNetMVCDBFirst.Models.OrderViewModel
+
+@{
+    ViewBag.Title = "Create Order with Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="card p-4">
+        <h2 class="mb-4">Create Order with Details</h2>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.OrderDate, new { @class = "form-label" })
+                @Html.EditorFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OrderDate, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.AgentID, new { @class = "form-label" })
+                @Html.DropDownList("AgentID", null, "Select Agent", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AgentID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.UserID, new { @class = "form-label" })
+                @Html.DropDownList("UserID", null, "Select User", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
+            </div>
+
+            <h4 class="mt-4">Order Details</h4>
+            for (int i = 0; i < Model.OrderDetails.Count; i++)
+            {
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.OrderDetails[i].ItemID, new { @class = "form-label" })
+                            @Html.DropDownListFor(model => model.OrderDetails[i].ItemID, ViewBag.ItemID as SelectList, "Select Item", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.OrderDetails[i].ItemID, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.OrderDetails[i].Quantity, new { @class = "form-label" })
+                            @Html.EditorFor(model => model.OrderDetails[i].Quantity, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "1" } })
+                            @Html.ValidationMessageFor(model => model.OrderDetails[i].Quantity, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.OrderDetails[i].UnitAmount, new { @class = "form-label" })
+                            @Html.EditorFor(model => model.OrderDetails[i].UnitAmount, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.OrderDetails[i].UnitAmount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            }
+
+    <div class="d-flex gap-2 mt-3">
+
+        <a href="@Url.Action("Index", "Orders")" class="btn btn-outline-secondary">Back to List</a>
+        <button type="submit" class="btn btn-primary">Create</button>
+
+    </div>
+        }
+        
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

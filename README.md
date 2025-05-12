@@ -46,13 +46,6 @@ Replace `YOUR_SERVER_NAME` with your actual SQL Server instance (e.g., `CHOUCHOU
 ### Build and Run the Application
 In Visual Studio, click “Start Without Debugging” or press `Ctrl + F5` to launch the web application.
 
-## Features
-- CRUD operations for Items and Orders
-- Agent and User management
-- Cart functionality
-- Sample data pre-loaded for testing
-- Entity Framework for managing relational data
-
 ## Login Information
 **Cusomter credentials for login:**  
 - Username: `john_doe`  
